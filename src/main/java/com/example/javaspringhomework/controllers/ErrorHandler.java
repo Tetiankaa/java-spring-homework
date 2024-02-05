@@ -19,7 +19,7 @@ public class ErrorHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorDTO> handleValidationException(MethodArgumentNotValidException exception){
-
+        System.out.println("MethodArgumentNotValidException");
         BindingResult bindingResult = exception.getBindingResult();
 
         List<String> validationErrors = bindingResult.getFieldErrors().stream()

@@ -3,6 +3,7 @@ package com.example.javaspringhomework.controllers;
 import com.example.javaspringhomework.dto.CarDTO;
 import com.example.javaspringhomework.service.CarService;
 import com.example.javaspringhomework.service.UploadPhotoService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class CarController {
     }
 
     @PostMapping("")
-    public ResponseEntity<CarDTO> saveCar(@RequestBody CarDTO car){
+    public ResponseEntity<CarDTO> saveCar(@RequestBody CarDTO car) throws MessagingException, IOException {
         CarDTO savedCar = service.create(car);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedCar.getId()).toUri();
 
@@ -42,7 +43,7 @@ public class CarController {
            try {
                service.deleteCar(id);
                return ResponseEntity.accepted().build();
-           }catch (RuntimeException e){
+           }catch (RuntimeException | MessagingException | IOException e){
                return ResponseEntity.notFound().build();
            }
 
